@@ -29,6 +29,8 @@ public class MovieModel implements Parcelable{
         vote_average = in.readDouble();
         overview = in.readString();
         popularity = in.readDouble();
+        backdrop_path = in.readString();
+
     }
 
     public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
@@ -129,6 +131,7 @@ public class MovieModel implements Parcelable{
         parcel.writeDouble(vote_average);
         parcel.writeString(overview);
         parcel.writeDouble(popularity);
+        parcel.writeString(backdrop_path);
     }
 
     public static class MovieResult {

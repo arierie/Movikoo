@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -49,6 +50,7 @@ public  class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>
         Picasso.with(mContext)
                 .load(movie.getPoster_path())
                 .into(holder.imageView);
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package id.arieridwan.movikoo.api;
 
 import id.arieridwan.movikoo.model.MovieModel;
+import id.arieridwan.movikoo.model.ReviewModel;
 import id.arieridwan.movikoo.model.VideoModel;
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -14,4 +15,6 @@ public interface MovieAPI {
     void getLatestMovies(Callback<MovieModel.MovieResult> cb);
     @GET("/movie/{id}/videos")
     public void getVideos(@Path("id") int id,Callback<VideoModel.VideoResult> response);
+    @GET("/movie/{id}/reviews")
+    public void getReview(@Path("id") int id,Callback<ReviewModel> response);
 }
