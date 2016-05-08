@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivTrailer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_play_circle_fill_24dp" />
+
+    <TextView
+        android:id="@+id/tvTrailer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:text="ASkasas"
+        android:background="#AA000000"
+        android:gravity="bottom|center"
+        android:layout_gravity="center_horizontal|bottom" />
+
+</FrameLayout>

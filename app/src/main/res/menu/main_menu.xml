@@ -1,0 +1,22 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item android:id="@+id/action_sort"
+        android:title="Search"
+        android:icon="@drawable/ic_sort_24dp_white"
+        app:showAsAction="always|collapseActionView" >
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/action_sort_by_popularity"
+                    android:title="Most Popular" />
+                <item android:id="@+id/action_sort_by_rating"
+                    android:title="Highest Rated" />
+                <item android:id="@+id/action_sort_by_favorite"
+                    android:title="Movie Details" />
+            </group>
+        </menu>
+    </item>
+</menu>
