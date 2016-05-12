@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.orm.SugarRecord;
+
 import java.util.List;
+
 import id.arieridwan.movikoo.R;
 import id.arieridwan.movikoo.adapter.FavAdapter;
 import id.arieridwan.movikoo.adapter.MovieAdapter;
@@ -199,7 +201,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void getFavoriteList() {
-        List<Favorite> fav = SugarRecord.listAll(Favorite.class);
+        List<Favorite> fav = Favorite.listAll(Favorite.class);
+        Log.d("test", String.valueOf(fav.size()));
+        Log.d("test", String.valueOf(fav));
         favAdapter.setFavList(fav);
         mRecyclerView.setAdapter(favAdapter);
         mSwipeRefreshLayout.setRefreshing(false);

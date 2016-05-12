@@ -36,7 +36,6 @@ public class MovieModel implements Parcelable{
         overview = in.readString();
         popularity = in.readDouble();
         backdrop_path = in.readString();
-
     }
 
     public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {

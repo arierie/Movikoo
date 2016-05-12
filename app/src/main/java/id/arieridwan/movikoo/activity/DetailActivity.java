@@ -51,7 +51,7 @@ public class DetailActivity extends AppCompatActivity {
     private LinearListView mReviewView;
     private ImageView poster,backdrop;
     private TextView title,overview,date,rate,pop;
-    private int id;
+    private int mMovieId;
     private String mMoviePoster,mMovieTitle,mMovieReleaseDate,mMovieOverview,mMovieBackdrop;
     private double mMovieVoteAverage,mMoviePopularity;
     private CoordinatorLayout coordinatorLayout;
@@ -94,7 +94,7 @@ public class DetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Favorite favorite = new Favorite(id,mMovieTitle,mMoviePoster,mMovieOverview,mMovieBackdrop,mMovieReleaseDate,mMovieVoteAverage,mMoviePopularity);
+                Favorite favorite = new Favorite(mMovieId,mMovieTitle,mMoviePoster,mMovieOverview,mMovieBackdrop,mMovieVoteAverage,mMovieReleaseDate,mMoviePopularity);
                 try {
                     favorite.save();
                     fab.setImageResource(R.drawable.ic_favorite_24dp_white);
@@ -112,7 +112,7 @@ public class DetailActivity extends AppCompatActivity {
     public void setData(){
 
         if (mMovie != null) {
-            id = mMovie.getId();
+            mMovieId = mMovie.getId();
             mMoviePoster = mMovie.getPoster_path();
             mMovieBackdrop = mMovie.getBackdrop_path();
             mMovieTitle = mMovie.getTitle();
@@ -133,7 +133,7 @@ public class DetailActivity extends AppCompatActivity {
             pop.setText(String.valueOf(mMoviePopularity));
         }
         else {
-            id = mFavorite.getIds();
+            mMovieId = mFavorite.getIds();
             mMovieTitle = mFavorite.getTitle();
             mMoviePoster = mFavorite.getPoster_path();
             mMovieOverview = mFavorite.getOverview();
@@ -168,7 +168,7 @@ public class DetailActivity extends AppCompatActivity {
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         MovieAPI service = restAdapter.create(MovieAPI.class);
-        service.getTrailer(id, new Callback<TrailerModel.TrailerResult>() {
+        service.getTrailer(mMovieId, new Callback<TrailerModel.TrailerResult>() {
             @Override
             public void success(TrailerModel.TrailerResult videoModel, Response response) {
                 mTrailerList = new ArrayList<>();
@@ -200,7 +200,7 @@ public class DetailActivity extends AppCompatActivity {
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         MovieAPI service = restAdapter.create(MovieAPI.class);
-        service.getReview(id, new Callback<ReviewModel>() {
+        service.getReview(mMovieId, new Callback<ReviewModel>() {
             @Override
             public void success(ReviewModel reviewModel, Response response) {
                 mReviewList = new ArrayList<>();

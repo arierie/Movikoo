@@ -17,7 +17,6 @@ import id.arieridwan.movikoo.R;
 import id.arieridwan.movikoo.activity.DetailActivity;
 import id.arieridwan.movikoo.model.Favorite;
 
-
 public class FavAdapter extends RecyclerView.Adapter<FavAdapter.ViewHolder>  {
 
     private List<Favorite> favList;
@@ -28,7 +27,6 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.ViewHolder>  {
     public FavAdapter(Context context) {
         this.mContext = context;
         this.layoutInflater = layoutInflater.from(context);
-        this.favList = new ArrayList<>();
     }
 
     @Override
@@ -53,7 +51,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.ViewHolder>  {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Favorite favorite = favList.get(position);
-        Picasso.with(mContext).load(favorite.getPoster_path()).placeholder(R.color.colorPrimaryDark).into(holder.imageView);
+        Picasso.with(mContext).load(favorite.getPoster_path()).into(holder.imageView);
 
     }
 
@@ -63,7 +61,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.ViewHolder>  {
     }
 
     public void setFavList(List<Favorite> favList){
-        this.favList.clear();
+        this.favList = new ArrayList<>();
         this.favList.addAll(favList);
         notifyDataSetChanged();
     }

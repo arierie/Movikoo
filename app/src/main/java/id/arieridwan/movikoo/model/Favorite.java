@@ -5,80 +5,83 @@ import android.os.Parcelable;
 
 import com.orm.SugarRecord;
 
+import java.util.List;
 
-
-public class Favorite extends SugarRecord implements Parcelable
-{
-    private int ids;
+public class Favorite extends SugarRecord implements Parcelable {
     private String title;
     private String poster_path;
     private String overview;
     private String backdrop_path;
     private String release_date;
+    private int id;
     private double vote_average;
     private double popularity;
 
-    protected Favorite(Parcel in) {
-        ids = in.readInt();
-        title = in.readString();
-        poster_path = in.readString();
-        overview = in.readString();
-        backdrop_path = in.readString();
-        release_date = in.readString();
-        vote_average = in.readDouble();
-        popularity = in.readDouble();
-    }
-    public Favorite() {
-
-    }
-
-    public Favorite(int ids, String title, String poster_path, String overview, String backdrop_path, String release_date, double vote_average,double popularity){
-        this.ids = ids;
+    public  Favorite(int id, String title,String poster_path, String overview, String backdrop_path, double vote_average, String release_date, double popularity){
+        this.id = id;
         this.title = title;
         this.poster_path = poster_path;
         this.overview = overview;
         this.backdrop_path = backdrop_path;
-        this.release_date = release_date;
         this.vote_average = vote_average;
+        this.release_date = release_date;
         this.popularity = popularity;
     }
 
-    public static final Creator<Favorite> CREATOR = new Creator<Favorite>() {
+    public Favorite(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        poster_path = in.readString();
+        release_date = in.readString();
+        vote_average = in.readDouble();
+        overview = in.readString();
+        popularity = in.readDouble();
+        backdrop_path = in.readString();
+    }
+
+    public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
         @Override
-        public Favorite createFromParcel(Parcel in) {
-            return new Favorite(in);
+        public MovieModel createFromParcel(Parcel in) {
+            return new MovieModel(in);
         }
 
         @Override
-        public Favorite[] newArray(int size) {
-            return new Favorite[size];
+        public MovieModel[] newArray(int size) {
+            return new MovieModel[size];
         }
     };
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public double getPopularity() {
+        return popularity;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(ids);
-        dest.writeString(title);
-        dest.writeString(poster_path);
-        dest.writeString(overview);
-        dest.writeString(backdrop_path);
-        dest.writeString(release_date);
-        dest.writeDouble(vote_average);
-        dest.writeDouble(popularity);
+    public void setPopularity(double popularity) {
+        this.popularity = popularity;
     }
 
+    public String getRelease_date() {
+        return release_date;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
+    }
 
     public int getIds() {
-        return ids;
+        return id;
     }
 
     public void setIds(int id) {
-        this.ids = id;
+        this.id = id;
+    }
+
+
+    public double getVote_average() {
+        return vote_average;
+    }
+
+    public void setVote_average(double vote_average) {
+        this.vote_average = vote_average;
     }
 
     public String getTitle() {
@@ -90,50 +93,51 @@ public class Favorite extends SugarRecord implements Parcelable
     }
 
     public String getPoster_path() {
-        return poster_path;
+        return "http://image.tmdb.org/t/p/w185" + poster_path;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
+    public void setPoster_path(String poster) {
+        this.poster_path = poster;
     }
 
     public String getOverview() {
         return overview;
     }
 
-    public void setOverview(String overview) {
-        this.overview = overview;
+    public void setOverview(String description) {
+        this.overview = description;
     }
 
     public String getBackdrop_path() {
-        return backdrop_path;
+        return "http://image.tmdb.org/t/p/w500"  + backdrop_path;
     }
 
-    public void setBackdrop_path(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
+    public void setBackdrop_path(String backdrop) {
+        this.backdrop_path = backdrop;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(poster_path);
+        parcel.writeString(release_date);
+        parcel.writeDouble(vote_average);
+        parcel.writeString(overview);
+        parcel.writeDouble(popularity);
+        parcel.writeString(backdrop_path);
     }
 
-    public double getVote_average() {
-        return vote_average;
-    }
+    public static class FavoriteResult {
+        private List<Favorite> results;
 
-    public void setVote_average(double vote_average) {
-        this.vote_average = vote_average;
-    }
-
-    public double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(double popularity) {
-        this.popularity = popularity;
+        public List<Favorite> getResults() {
+            return results;
+        }
     }
 }
