@@ -1,11 +1,13 @@
 package id.arieridwan.movikoo.model;
 
 import java.util.List;
-
-/**
- * Created by root on 05/05/16.
+/*
+ * Created by Arie Ridwansyah on 5/10/16 6:07 AM
+ * Copyright (c) 2016. All rights reserved.
+ * enjoy your coding and drink coffee ^_^
+ * Last modified 5/10/16 6:07 AM
  */
-public class VideoModel {
+public class TrailerModel {
     private String id;
     private String iso_639_1;
     private String iso_3166_1;
@@ -79,10 +81,10 @@ public class VideoModel {
         this.type = type;
     }
 
-    public static class VideoResult {
-        private List<VideoModel> results;
+    public static class TrailerResult {
+        private List<TrailerModel> results;
 
-        public List<VideoModel> getResults() {
+        public List<TrailerModel> getResults() {
             return results;
         }
     }

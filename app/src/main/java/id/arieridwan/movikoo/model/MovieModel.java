@@ -1,11 +1,17 @@
 package id.arieridwan.movikoo.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
 
-
+/*
+ * Created by Arie Ridwansyah on 5/10/16 6:07 AM
+ * Copyright (c) 2016. All rights reserved.
+ * enjoy your coding and drink coffee ^_^
+ * Last modified 5/8/16 9:10 PM
+ */
 public class MovieModel implements Parcelable{
     private String title;
     private String poster_path;
@@ -17,11 +23,11 @@ public class MovieModel implements Parcelable{
     private double vote_average;
     private double popularity;
 
-    public MovieModel() {
+    public MovieModel(Cursor cursor) {
 
     }
 
-    protected MovieModel(Parcel in) {
+    public MovieModel(Parcel in) {
         id = in.readInt();
         title = in.readString();
         poster_path = in.readString();

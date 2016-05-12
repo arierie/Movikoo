@@ -2,12 +2,16 @@ package id.arieridwan.movikoo.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linearlistview.LinearListView;
 import com.squareup.picasso.Picasso;
@@ -19,27 +23,40 @@ import id.arieridwan.movikoo.R;
 import id.arieridwan.movikoo.adapter.ReviewAdapter;
 import id.arieridwan.movikoo.adapter.TrailerAdapter;
 import id.arieridwan.movikoo.api.MovieAPI;
+import id.arieridwan.movikoo.model.Favorite;
 import id.arieridwan.movikoo.model.MovieModel;
 import id.arieridwan.movikoo.model.Result;
 import id.arieridwan.movikoo.model.ReviewModel;
-import id.arieridwan.movikoo.model.VideoModel;
+import id.arieridwan.movikoo.model.TrailerModel;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
+/*
+ * Created by Arie Ridwansyah on 5/10/16 6:04 AM
+ * Copyright (c) 2016. All rights reserved.
+ * enjoy your coding and drink coffee ^_^
+ * Last modified 5/10/16 5:23 AM
+ */
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "movie";
+    public static final String EXTRA_FAV = "favorite";
     private MovieModel mMovie;
-    private List<VideoModel> mVideoList;
+    private Favorite mFavorite;
+    private List<TrailerModel> mTrailerList;
     private List<Result> mReviewList;
     private LinearListView mTrailersView;
     private LinearListView mReviewView;
     private ImageView poster,backdrop;
     private TextView title,overview,date,rate,pop;
     private int id;
+    private String mMoviePoster,mMovieTitle,mMovieReleaseDate,mMovieOverview,mMovieBackdrop;
+    private double mMovieVoteAverage,mMoviePopularity;
+    private CoordinatorLayout coordinatorLayout;
+    private FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +65,10 @@ public class DetailActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra(EXTRA_MOVIE)) {
             mMovie = getIntent().getParcelableExtra(EXTRA_MOVIE);
-        } else {
+        } else if (getIntent().hasExtra(EXTRA_FAV)){
+            mFavorite = getIntent().getParcelableExtra(EXTRA_FAV);
+        }
+        else {
             throw new IllegalArgumentException("Detail not found");
         }
 
@@ -65,32 +85,74 @@ public class DetailActivity extends AppCompatActivity {
         pop = (TextView)findViewById(R.id.tvPopular);
         mTrailersView = (LinearListView) findViewById(R.id.detail_trailers);
         mReviewView = (LinearListView) findViewById(R.id.detail_reviews);
-        Picasso.with(this)
-                .load(mMovie.getPoster_path())
-                .into(poster);
-        Picasso.with(this).load(mMovie.getBackdrop_path())
-                .into(backdrop);
-        title.setText(mMovie.getTitle());
-        overview.setText(mMovie.getOverview());
-        date.setText(mMovie.getRelease_date());
-        rate.setText(String.valueOf(mMovie.getVote_average()));
-        pop.setText(String.valueOf(mMovie.getPopularity()));
-        id = mMovie.getId();
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coor);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        setData();
         getTrailer();
         getReview();
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Favorite favorite = new Favorite(id,mMovieTitle,mMoviePoster,mMovieOverview,mMovieBackdrop,mMovieReleaseDate,mMovieVoteAverage,mMoviePopularity);
+                try {
+                    favorite.save();
+                    fab.setImageResource(R.drawable.ic_favorite_24dp_white);
+                    fab.setImageResource(R.drawable.ic_favorite_outline_24dp);
+                    Toast.makeText(DetailActivity.this, " Fav, save !", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
 
-            NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
-            return true;
+    public void setData(){
+
+        if (mMovie != null) {
+            id = mMovie.getId();
+            mMoviePoster = mMovie.getPoster_path();
+            mMovieBackdrop = mMovie.getBackdrop_path();
+            mMovieTitle = mMovie.getTitle();
+            mMovieOverview = mMovie.getOverview();
+            mMovieReleaseDate = mMovie.getRelease_date();
+            mMovieVoteAverage = mMovie.getVote_average();
+            mMoviePopularity = mMovie.getPopularity();
+
+            Picasso.with(this)
+                    .load(mMoviePoster)
+                    .into(poster);
+            Picasso.with(this).load(mMovieBackdrop)
+                    .into(backdrop);
+            title.setText(mMovieTitle);
+            overview.setText(mMovieOverview);
+            date.setText(mMovieReleaseDate);
+            rate.setText(String.valueOf(mMovieVoteAverage));
+            pop.setText(String.valueOf(mMoviePopularity));
         }
+        else {
+            id = mFavorite.getIds();
+            mMovieTitle = mFavorite.getTitle();
+            mMoviePoster = mFavorite.getPoster_path();
+            mMovieOverview = mFavorite.getOverview();
+            mMovieBackdrop = mFavorite.getBackdrop_path();
+            mMovieReleaseDate = mFavorite.getRelease_date();
+            mMovieVoteAverage = mFavorite.getVote_average();
+            mMoviePopularity = mFavorite.getPopularity();
 
-        return super.onOptionsItemSelected(item);
+            Picasso.with(this)
+                    .load(mMoviePoster)
+                    .into(poster);
+            Picasso.with(this).load(mMovieBackdrop)
+                    .into(backdrop);
+            title.setText(mMovieTitle);
+            overview.setText(mMovieOverview);
+            date.setText(mMovieReleaseDate);
+            rate.setText(String.valueOf(mMovieVoteAverage));
+            pop.setText(String.valueOf(mMoviePopularity));
+        }
     }
 
     public void getTrailer(){
@@ -106,14 +168,14 @@ public class DetailActivity extends AppCompatActivity {
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         MovieAPI service = restAdapter.create(MovieAPI.class);
-        service.getVideos(id, new Callback<VideoModel.VideoResult>() {
+        service.getTrailer(id, new Callback<TrailerModel.TrailerResult>() {
             @Override
-            public void success(VideoModel.VideoResult videoModel, Response response) {
-                mVideoList  = new ArrayList<>();
-                mVideoList.addAll(videoModel.getResults());
+            public void success(TrailerModel.TrailerResult videoModel, Response response) {
+                mTrailerList = new ArrayList<>();
+                mTrailerList.addAll(videoModel.getResults());
                 TrailerAdapter adapt = new TrailerAdapter(getApplicationContext(),
                         R.layout.item_trailer,
-                        (ArrayList<VideoModel>) mVideoList);
+                        (ArrayList<TrailerModel>) mTrailerList);
                 mTrailersView.setAdapter(adapt);
             }
 
@@ -154,4 +216,21 @@ public class DetailActivity extends AppCompatActivity {
         });
 
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.home:
+                NavUtils.navigateUpTo(this, new Intent(this, MainActivity.class));
+            break;
+        }
+        return true;
+
+    }
+
+
+
+
 }

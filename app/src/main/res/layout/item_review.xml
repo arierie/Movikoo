@@ -20,4 +20,16 @@
         android:textSize="15sp"
         android:layout_marginTop="5dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SHOW MORE"
+        android:id="@+id/tvMore"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp"
+        android:textColor="#fff" />
+
 </LinearLayout>

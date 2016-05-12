@@ -15,56 +15,56 @@ import java.util.List;
 
 import id.arieridwan.movikoo.R;
 import id.arieridwan.movikoo.activity.DetailActivity;
-import id.arieridwan.movikoo.model.MovieModel;
-/*
- * Created by Arie Ridwansyah on 5/10/16 6:04 AM
- * Copyright (c) 2016. All rights reserved.
- * enjoy your coding and drink coffee ^_^
- * Last modified 5/8/16 8:43 PM
- */
-public  class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
-    private List<MovieModel> mMovieList;
-    private LayoutInflater mInflater;
+import id.arieridwan.movikoo.model.Favorite;
+
+
+public class FavAdapter extends RecyclerView.Adapter<FavAdapter.ViewHolder>  {
+
+    private List<Favorite> favList;
+    private LayoutInflater layoutInflater;
     private Context mContext;
 
-    public MovieAdapter(Context context) {
+
+    public FavAdapter(Context context) {
         this.mContext = context;
-        this.mInflater = LayoutInflater.from(context);
+        this.layoutInflater = layoutInflater.from(context);
+        this.favList = new ArrayList<>();
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View view = mInflater.inflate(R.layout.list_item, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(R.layout.list_item, parent, false);
         final ViewHolder viewHolder = new ViewHolder(view);
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 int position = viewHolder.getAdapterPosition();
+
                 Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra(DetailActivity.EXTRA_MOVIE, mMovieList.get(position));
+                intent.putExtra(DetailActivity.EXTRA_FAV, favList.get(position));
+
                 mContext.startActivity(intent);
             }
-        });
-        return viewHolder;
+            });
+            return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        MovieModel movie = mMovieList.get(position);
-        Picasso.with(mContext)
-                .load(movie.getPoster_path())
-                .into(holder.imageView);
+        Favorite favorite = favList.get(position);
+        Picasso.with(mContext).load(favorite.getPoster_path()).placeholder(R.color.colorPrimaryDark).into(holder.imageView);
 
     }
 
     @Override
     public int getItemCount() {
-        return (mMovieList == null) ? 0 : mMovieList.size();
+        return (favList== null) ? 0 : favList.size();
     }
 
-    public void setMovieList(List<MovieModel> movieList) {
-        this.mMovieList = new ArrayList<>();
-        this.mMovieList.addAll(movieList);
+    public void setFavList(List<Favorite> favList){
+        this.favList.clear();
+        this.favList.addAll(favList);
         notifyDataSetChanged();
     }
 

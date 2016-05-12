@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
+        android:id="@+id/ivPlay"
         android:layout_gravity="center"
         android:src="@drawable/ic_play_circle_fill_24dp" />
 
@@ -24,7 +24,6 @@
         android:padding="5dp"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:text="ASkasas"
         android:background="#AA000000"
         android:gravity="bottom|center"
         android:layout_gravity="center_horizontal|bottom" />

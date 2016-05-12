@@ -16,13 +16,18 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import id.arieridwan.movikoo.R;
-import id.arieridwan.movikoo.model.VideoModel;
-
-public class TrailerAdapter extends ArrayAdapter<VideoModel> {
+import id.arieridwan.movikoo.model.TrailerModel;
+/*
+ * Created by Arie Ridwansyah on 5/10/16 6:05 AM
+ * Copyright (c) 2016. All rights reserved.
+ * enjoy your coding and drink coffee ^_^
+ * Last modified 5/10/16 5:19 AM
+ */
+public class TrailerAdapter extends ArrayAdapter<TrailerModel> {
 
     private Context context;
-    private ArrayList<VideoModel> trailerList;
-    public TrailerAdapter(Context context, int resource, ArrayList<VideoModel> objects) {
+    private ArrayList<TrailerModel> trailerList;
+    public TrailerAdapter(Context context, int resource, ArrayList<TrailerModel> objects) {
         super(context, resource, objects);
         this.context = context;
         this.trailerList = objects;
@@ -32,7 +37,7 @@ public class TrailerAdapter extends ArrayAdapter<VideoModel> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_trailer, parent, false);
-        final VideoModel trailer = trailerList.get(position);
+        final TrailerModel trailer = trailerList.get(position);
         TextView tv = (TextView) view.findViewById(R.id.tvTrailer);
         tv.setText(trailer.getName());
         ImageView img = (ImageView) view.findViewById(R.id.ivTrailer);
@@ -44,7 +49,6 @@ public class TrailerAdapter extends ArrayAdapter<VideoModel> {
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(i);
-
             }
         });
         return view;
