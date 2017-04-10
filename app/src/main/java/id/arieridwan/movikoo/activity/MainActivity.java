@@ -1,5 +1,6 @@
 package id.arieridwan.movikoo.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import id.arieridwan.movikoo.R;
@@ -18,11 +32,13 @@ import id.arieridwan.movikoo.adapter.MovieAdapter;
 import id.arieridwan.movikoo.api.MovieAPI;
 import id.arieridwan.movikoo.model.Favorite;
 import id.arieridwan.movikoo.model.MovieModel;
+import id.arieridwan.movikoo.widget.TextSliderViewCustom;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
 /*
  * Created by Arie Ridwansyah on 5/10/16 6:04 AM
  * Copyright (c) 2016. All rights reserved.
@@ -40,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private String mSortBy = POPULARITY_DESC;
     private String load = "pop";
     private FavAdapter favAdapter;
+    //slider
+    private SliderLayout mDemoSlider;
+    private List<MovieModel> movieList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +80,70 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 dataLoad();
             }
         });
+
+        mDemoSlider = (SliderLayout) findViewById(R.id.slider);
+        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mDemoSlider.setDuration(4000);
+        getDataPopSlider();
     }
 
-    public void getDataPop(){
+
+    public void getDataPopSlider() {
         mSwipeRefreshLayout.setRefreshing(true);
         RestAdapter restAdapter = new RestAdapter.Builder()
-            .setEndpoint("http://api.themoviedb.org/3")
-            .setRequestInterceptor(new RequestInterceptor() {
-                @Override
-                public void intercept(RequestFacade request) {
-                    request.addEncodedQueryParam("api_key", "765e4945e78f4a4497cd97a5734894d9");
+                .setEndpoint("http://api.themoviedb.org/3")
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addEncodedQueryParam("api_key", "765e4945e78f4a4497cd97a5734894d9");
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        MovieAPI service = restAdapter.create(MovieAPI.class);
+        service.getPop(new Callback<MovieModel.MovieResult>() {
+            @Override
+            public void success(MovieModel.MovieResult movieResult, Response response) {
+                movieList.addAll(movieResult.getResults());
+                for (int i = 0; i < 5; i++) {
+                    TextSliderViewCustom textSliderView = new TextSliderViewCustom(getApplicationContext());
+                    final int finalI = i;
+                    textSliderView
+                            .image(movieList.get(i).getBackdrop_path())
+                            .setScaleType(BaseSliderView.ScaleType.Fit)
+                            .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                                @Override
+                                public void onSliderClick(BaseSliderView slider) {
+                                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                                    intent.putExtra(DetailActivity.EXTRA_MOVIE, movieList.get(finalI));
+                                    startActivity(intent);
+                                }
+                            });
+                    mDemoSlider.addSlider(textSliderView);
                 }
-            })
-            .setLogLevel(RestAdapter.LogLevel.FULL)
-            .build();
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+    public void getDataPop() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://api.themoviedb.org/3")
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addEncodedQueryParam("api_key", "765e4945e78f4a4497cd97a5734894d9");
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
         MovieAPI service = restAdapter.create(MovieAPI.class);
         service.getPop(new Callback<MovieModel.MovieResult>() {
             @Override
@@ -91,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
-    public void getDataRate(){
+    public void getDataRate() {
         mSwipeRefreshLayout.setRefreshing(true);
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
@@ -186,8 +255,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    public void dataLoad(){
-        switch (load){
+    public void dataLoad() {
+        switch (load) {
             case "pop":
                 getDataPop();
                 break;

@@ -1,38 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
-    tools:context="id.arieridwan.movikoo.MainActivity">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-<android.support.design.widget.AppBarLayout
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:theme="@style/AppTheme.AppBarOverlay">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-</android.support.design.widget.AppBarLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
 
+                    <com.daimajia.slider.library.SliderLayout
+                        android:id="@+id/slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        custom:auto_cycle="true"
+                        custom:indicator_visibility="visible"
+                        custom:pager_animation="Accordion"
+                        custom:pager_animation_span="1100" />
+
+                    <com.daimajia.slider.library.Indicators.PagerIndicator
+                        android:id="@+id/custom_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        custom:selected_color="#0095BF"
+                        custom:selected_height="6dp"
+                        custom:selected_padding_left="5dp"
+                        custom:selected_padding_right="5dp"
+                        custom:selected_width="6dp"
+                        custom:shape="oval"
+                        custom:unselected_color="#55333333"
+                        custom:unselected_height="6dp"
+                        custom:unselected_padding_left="5dp"
+                        custom:unselected_padding_right="5dp"
+                        custom:unselected_width="6dp" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>
