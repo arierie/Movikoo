@@ -1,5 +1,5 @@
 # Movikoo
-Sebuah aplikasi yang menampilkan film - film populer. Ini adalah aplikasi yang saya submit di Indonesia Android Kejar level intermediate. 
+Sebuah aplikasi lama untuk yang menampilkan film - film populer. Ini adalah aplikasi yang saya submit di Indonesia Android Kejar level intermediate. Hanya menggunakan retrofit 1 dan tanpa design pattern.
 Aplikasi ini merupakan final project dari udacity online course, aplikasi ini menggunakan api dari TheMovieDB, sebuah situs penyedia informasi tentang film - film. 
 Adapun 3rd party library yang digunakan untuk membuat aplikasi ini adalah :
 - Retrofit
@@ -8,16 +8,3 @@ Adapun 3rd party library yang digunakan untuk membuat aplikasi ini adalah :
 
 ### Version
 1.1
-
-### ATTENTION
->Silahkan gunakan source code ini dengan bijak, copyright tetap berada di saya. 
->Dilarang mensubmit source code ini dengan mengatasnamakan milik pribadi.
->Hargailah proses saya dalam pembuatan aplikasi ini.
-
-License
-----
-
-Arie Ridwansyah
-
-**Enjoy your coding & drink coffee ^_^**
-
